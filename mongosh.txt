@@ -1,0 +1,122 @@
+use library1
+Q1
+DB.createCollection("Books", {
+      validator: {
+        $jsonSchema: {
+          required: ["title"],
+          properties: {
+          
+          }
+        }
+      }
+    })  
+Q2
+DB.Authors.insertOne(
+    {name:"xxx",
+    age:93}
+)
+Q3
+DB.createCollection("Logs",{
+    capped:true,
+    size:1000000
+})
+Q4
+DB.Books.createIndex( { title : 1 } )
+Q5
+DB.Books.insertOne({
+        "title":title,
+        "author":author,
+        "year":year,
+        "genres":genres
+    })
+Q6
+DB.Books.insertMany([{
+    "title":"hhh",
+    "author":"kkkk",
+    "year":"jjjjj",
+    "genres":["ffff","lllllll"]
+},
+{
+    "title":"lll",
+    "author":"kkkk",
+    "year":"jjjjj",
+    "genres":["ffff","lllllll"]
+},
+{
+    "title":"2ews",
+    "author":"kkkk",
+    "year":"jjjjj",
+    "genres":["ffff","lllllll"]
+}
+])
+Q7
+DB.logs.insertOne({
+    "book_id":book_id,
+    "action":action
+})
+Q8
+DB.Books.updateOne({title:"future"},{
+        $set:{
+            year:2022
+        }
+    })
+    Q9
+    DB.Books.findOne({"title":title})
+    Q10
+    DB.Books.find({year:{$gt:from,$lt:to}}).toArray()
+    Q11
+    DB.Books.findOne({genres:genre})
+    Q12
+    DB.Books.find().skip(2).limit(3).sort({year:-1}).toArray()
+    Q13
+    DB.Books.find({
+         year: { $type: "int" }
+    }).toArray()
+    Q14
+    DB.Books.find({
+  genres: { $nin: ["Horror", "Science Fiction"] }
+}).toArray()
+q15
+dB.Books.deleteMany({year:{$lt:tyear}})
+Q16
+DB.Books.aggregate([
+  {
+    $match: {
+      year: { $gt: 2000 }
+    }
+  },
+  {
+    $sort: {
+      year: -1
+    }
+  }
+]).toArray()
+Q17
+DB.Books.aggregate([
+        {
+            $match:{
+                year:{$gt:2000}
+            }
+        },{
+            $project:{
+                _id: 0,
+      title: 1,
+      author: 1,
+      year: 1
+            }
+        }
+    ]
+    ).toArray()
+    Q18
+   DB.Books.aggregate([{$unwind:"$genres"}]).toArray()
+    return book
+Q19
+DB.Books.aggregate([{
+        $lookup: {
+            from: "Logs",
+            localField: "_id",
+            foreignField: "book_id",
+            as: "joinedData"
+
+        }
+    }]).toArray()
